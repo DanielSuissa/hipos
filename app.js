@@ -1,18 +1,18 @@
 const cards = [
- {name:'Hiposaurus', type:'danger', count:'players-1', img:'a_single_illustrated_game_card_in_a_vertical_recta.png', text:'When you draw this card, you are lunch unless you use Hippo Treat.'},
- {name:'Hippo Treat', type:'defuse', count:6, img:'a_full_color_illustrated_playing_card_game_card.png', text:'Use automatically when you draw Hiposaurus. Then hide Hiposaurus at the bottom of the draw pile.'},
- {name:'Stampede', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_in_a_por.png', text:'End your turn without drawing. The next player must survive 2 draw turns.'},
- {name:'Play Dead', type:'action', count:4, img:'a_single_illustrated_game_card_design_overall_sce.png', text:'End one of your required draw turns without drawing a card.'},
- {name:'Share Snacks', type:'action', count:4, img:'a_colorful_illustrated_game_card_poster_layout.png', text:'Choose a player. They give you 1 random card from their hand.'},
- {name:'Lost in the Swamp', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_overall.png', text:'Shuffle the draw pile.'},
- {name:'Hippo Vision', type:'action', count:5, img:'a_full_frame_illustrated_game_card_design._overall.png', text:'Privately look at the top 3 cards. Keep, reverse, or shuffle them.'},
- {name:'Not Today!', type:'reaction', count:5, img:'a_full_card_illustration_game_card_artwork._overal.png', text:'Cancel an action card before it takes effect.'},
- {name:'Rewrite the Tracks', type:'action', count:4, img:'a_full_card_illustration_in_a_cartoon_board_game_a.png', text:'Take the bottom card of the draw pile and put it on top.'},
- {name:'Intern Meerkats', type:'ally', count:4, img:'a_full_color_illustrated_game_card_layout_cartoon.png', text:'Ally. 2 identical steal random. 3 identical request specific. 5 different take from discard.'},
- {name:'Drama Flamingos', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_boardgam.png', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Panic Monkeys', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_style.png', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Conspiracy Crocodiles', type:'ally', count:4, img:'a_full_frame_illustrated_game_card_poster_design.png', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Emotional Zebras', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_layout.png', text:'Ally card. Same combo rules as every Ally card.'}
+ {name:'Hiposaurus', type:'danger', count:'players-1', img:'a_single_illustrated_game_card_in_a_vertical_recta.webp', text:'When you draw this card, you are lunch unless you use Hippo Treat.'},
+ {name:'Hippo Treat', type:'defuse', count:6, img:'a_full_color_illustrated_playing_card_game_card.webp', text:'Use automatically when you draw Hiposaurus. Then hide Hiposaurus at the bottom of the draw pile.'},
+ {name:'Stampede', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_in_a_por.webp', text:'End your turn without drawing. The next player must survive 2 draw turns.'},
+ {name:'Play Dead', type:'action', count:4, img:'a_single_illustrated_game_card_design_overall_sce.webp', text:'End one of your required draw turns without drawing a card.'},
+ {name:'Share Snacks', type:'action', count:4, img:'a_colorful_illustrated_game_card_poster_layout.webp', text:'Choose a player. They give you 1 random card from their hand.'},
+ {name:'Lost in the Swamp', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_overall.webp', text:'Shuffle the draw pile.'},
+ {name:'Hippo Vision', type:'action', count:5, img:'a_full_frame_illustrated_game_card_design._overall.webp', text:'Privately look at the top 3 cards. Keep, reverse, or shuffle them.'},
+ {name:'Not Today!', type:'reaction', count:5, img:'a_full_card_illustration_game_card_artwork._overal.webp', text:'Cancel an action card before it takes effect.'},
+ {name:'Rewrite the Tracks', type:'action', count:4, img:'a_full_card_illustration_in_a_cartoon_board_game_a.webp', text:'Take the bottom card of the draw pile and put it on top.'},
+ {name:'Intern Meerkats', type:'ally', count:4, img:'a_full_color_illustrated_game_card_layout_cartoon.webp', text:'Ally. 2 identical steal random. 3 identical request specific. 5 different take from discard.'},
+ {name:'Drama Flamingos', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_boardgam.webp', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Panic Monkeys', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_style.webp', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Conspiracy Crocodiles', type:'ally', count:4, img:'a_full_frame_illustrated_game_card_poster_design.webp', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Emotional Zebras', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_layout.webp', text:'Ally card. Same combo rules as every Ally card.'}
 ];
 const allyNames = cards.filter(c=>c.type==='ally').map(c=>c.name);
 const playerThemes = [
