@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hungry Hippos – Playable Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="appShell">
+    <header class="topbar">
+      <div class="brand"><span class="logo">🦛</span><div><b>Hungry Hippos</b><small>hot-seat prototype</small></div></div>
+      <div class="topActions"><button id="setupBtn" class="ghost">Players</button><button id="newGame" class="primary">New game</button></div>
+    </header>
+
+    <section class="setupPanel" id="setupPanel">
+      <div class="setupHead"><b>Game setup</b><span>Edit names, then start</span></div>
+      <label>Players <input id="players" type="number" min="2" max="5" value="4"></label>
+      <div id="nameFields" class="nameFields"></div>
+      <p>Deal: every player starts with 1 Hippo Treat + 4 cards. The deck contains <b>players − 1 Hiposaurus</b>.</p>
+    </section>
+
+    <main class="gameBoard" id="play">
+      <aside class="leftRail">
+        <div class="deckCard" id="drawBtn" role="button" tabindex="0"><strong id="deckCount">DECK</strong><span>Tap to draw</span></div>
+        <button id="endBtn" class="secondary">How do I end?</button>
+        <div class="infoBox" id="turnInfo">No game running</div>
+        <div class="infoBox small" id="discardInfo">Discard: 0</div>
+      </aside>
+
+      <section class="centerPlay">
+        <div class="playersStrip" id="playersView"></div>
+        <div class="statusBar" id="status">Open Players, name everyone, then start a game.</div>
+        <div class="handHead"><h2 id="handTitle">Current hand</h2><button id="rulesBtn" class="ghost">Rules</button></div>
+        <div class="hand" id="hand"></div>
+      </section>
+
+      <aside class="rightRail">
+        <div class="selectedCard" id="selectedCard"><b>Select a card</b><span>Tap a card in the hand to see what it can do.</span></div>
+        <div class="actionButtons" id="actionButtons"></div>
+        <div class="log" id="log"></div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal" id="modal"><div class="modalCard"><button id="closeModal">×</button><h3 id="modalTitle"></h3><div id="modalBody"></div></div></div>
+  <div class="eventOverlay" id="eventOverlay"><div class="eventCard" id="eventCard"></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
