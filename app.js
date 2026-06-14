@@ -1,18 +1,18 @@
 const cards = [
- {name:'Hiposaurus', type:'danger', count:'players-1', img:'a_single_illustrated_game_card_in_a_vertical_recta.webp', text:'When you draw this card, you are lunch unless you use Hippo Treat.'},
- {name:'Hippo Treat', type:'defuse', count:6, img:'a_full_color_illustrated_playing_card_game_card.webp', text:'Use automatically when you draw Hiposaurus. Then hide Hiposaurus at the bottom of the draw pile.'},
- {name:'Stampede', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_in_a_por.webp', text:'End your turn without drawing. The next player must survive 2 draw turns.'},
- {name:'Play Dead', type:'action', count:4, img:'a_single_illustrated_game_card_design_overall_sce.webp', text:'End one of your required draw turns without drawing a card.'},
- {name:'Share Snacks', type:'action', count:4, img:'a_colorful_illustrated_game_card_poster_layout.webp', text:'Choose a player. They give you 1 random card from their hand.'},
- {name:'Lost in the Swamp', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_overall.webp', text:'Shuffle the draw pile.'},
- {name:'Hippo Vision', type:'action', count:5, img:'a_full_frame_illustrated_game_card_design._overall.webp', text:'Privately look at the top 3 cards. Keep, reverse, or shuffle them.'},
- {name:'Not Today!', type:'reaction', count:5, img:'a_full_card_illustration_game_card_artwork._overal.webp', text:'Cancel an action card before it takes effect.'},
- {name:'Rewrite the Tracks', type:'action', count:4, img:'a_full_card_illustration_in_a_cartoon_board_game_a.webp', text:'Take the bottom card of the draw pile and put it on top.'},
- {name:'Intern Meerkats', type:'ally', count:4, img:'a_full_color_illustrated_game_card_layout_cartoon.webp', text:'Ally. 2 identical steal random. 3 identical request specific. 5 different take from discard.'},
- {name:'Drama Flamingos', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_boardgam.webp', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Panic Monkeys', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_style.webp', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Conspiracy Crocodiles', type:'ally', count:4, img:'a_full_frame_illustrated_game_card_poster_design.webp', text:'Ally card. Same combo rules as every Ally card.'},
- {name:'Emotional Zebras', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_layout.webp', text:'Ally card. Same combo rules as every Ally card.'}
+ {name:'Hiposaurus', type:'danger', count:'players-1', img:'a_single_illustrated_game_card_in_a_vertical_recta.png', text:'When you draw this card, you are lunch unless you use Hippo Treat.'},
+ {name:'Hippo Treat', type:'defuse', count:6, img:'a_full_color_illustrated_playing_card_game_card.png', text:'Use automatically when you draw Hiposaurus. Then hide Hiposaurus at the bottom of the draw pile.'},
+ {name:'Stampede', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_in_a_por.png', text:'End your turn without drawing. The next player must survive 2 draw turns.'},
+ {name:'Play Dead', type:'action', count:4, img:'a_single_illustrated_game_card_design_overall_sce.png', text:'End one of your required draw turns without drawing a card.'},
+ {name:'Share Snacks', type:'action', count:4, img:'a_colorful_illustrated_game_card_poster_layout.png', text:'Choose a player. They give you 1 random card from their hand.'},
+ {name:'Lost in the Swamp', type:'action', count:4, img:'a_full_color_illustrated_game_card_design_overall.png', text:'Shuffle the draw pile.'},
+ {name:'Hippo Vision', type:'action', count:5, img:'a_full_frame_illustrated_game_card_design._overall.png', text:'Privately look at the top 3 cards. Keep, reverse, or shuffle them.'},
+ {name:'Not Today!', type:'reaction', count:5, img:'a_full_card_illustration_game_card_artwork._overal.png', text:'Cancel an action card before it takes effect.'},
+ {name:'Rewrite the Tracks', type:'action', count:4, img:'a_full_card_illustration_in_a_cartoon_board_game_a.png', text:'Take the bottom card of the draw pile and put it on top.'},
+ {name:'Intern Meerkats', type:'ally', count:4, img:'a_full_color_illustrated_game_card_layout_cartoon.png', text:'Ally. 2 identical steal random. 3 identical request specific. 5 different take from discard.'},
+ {name:'Drama Flamingos', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_boardgam.png', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Panic Monkeys', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_style.png', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Conspiracy Crocodiles', type:'ally', count:4, img:'a_full_frame_illustrated_game_card_poster_design.png', text:'Ally card. Same combo rules as every Ally card.'},
+ {name:'Emotional Zebras', type:'ally', count:4, img:'a_full_color_illustrated_game_card_poster_layout.png', text:'Ally card. Same combo rules as every Ally card.'}
 ];
 const allyNames = cards.filter(c=>c.type==='ally').map(c=>c.name);
 const playerThemes = [
@@ -22,7 +22,7 @@ const playerThemes = [
  {accent:'#f05a12', soft:'#fff4e9', name:'Dust'},
  {accent:'#69338a', soft:'#f8efff', name:'Violet'}
 ];
-let state = {players:[], deck:[], discard:[], turn:0, turnDraws:1, queuedDraws:[], started:false, selectedIndex:null, locked:false};
+let state = {players:[], deck:[], discard:[], turn:0, turnDraws:1, queuedDraws:[], started:false, selectedIndex:null, locked:false, npcRunning:false};
 const $ = s => document.querySelector(s);
 function uid(){return crypto.randomUUID?.() || String(Math.random()).slice(2)}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -33,13 +33,27 @@ function log(t){const el=$('#log'); if(!el) return; const line=document.createEl
 function status(t){$('#status').textContent=t; log(t)}
 function current(){return state.players[state.turn]}
 function alivePlayers(){return state.players.filter(p=>!p.dead)}
-function setupNames(){ const n=Math.max(2,Math.min(5,+$('#players').value||4)); const old=[...document.querySelectorAll('#nameFields input')].map(x=>x.value); const box=$('#nameFields'); box.innerHTML=''; for(let i=0;i<n;i++){ const inp=document.createElement('input'); inp.id='pname'+i; inp.value=old[i] || `Explorer ${i+1}`; inp.placeholder=`Player ${i+1}`; box.appendChild(inp);} }
+function setupNames(){
+ const n=Math.max(2,Math.min(5,+$('#players').value||4));
+ const oldNames=[...document.querySelectorAll('#nameFields input')].map(x=>x.value);
+ const oldAi=[...document.querySelectorAll('#nameFields select')].map(x=>x.value);
+ const box=$('#nameFields'); box.innerHTML='';
+ for(let i=0;i<n;i++){
+  const row=document.createElement('div'); row.className='playerSetup';
+  row.innerHTML=`<input id="pname${i}" value="${oldNames[i] || `Explorer ${i+1}`}" placeholder="Player ${i+1}">
+  <select id="pai${i}" title="Player type">
+   <option value="human">Human</option><option value="easy">NPC Easy</option><option value="smart">NPC Smart</option><option value="strategic">NPC Strategic</option>
+  </select>`;
+  box.appendChild(row); const sel=row.querySelector('select'); sel.value=oldAi[i]||'human';
+ }
+}
 function getNames(n){return Array.from({length:n},(_,i)=>$('#pname'+i)?.value?.trim() || `Explorer ${i+1}`)}
+function getAis(n){return Array.from({length:n},(_,i)=>$('#pai'+i)?.value || 'human')}
 function start(){
- const n=Math.max(2,Math.min(5,+$('#players').value||4)); const names=getNames(n);
+ const n=Math.max(2,Math.min(5,+$('#players').value||4)); const names=getNames(n); const ais=getAis(n);
  const cleanDeck=buildDeck(n).filter(c=>c.name!=='Hiposaurus' && c.name!=='Hippo Treat');
- state={players:[],deck:cleanDeck,discard:[],turn:0,turnDraws:1,queuedDraws:Array(n).fill(0),started:true,selectedIndex:null,locked:false};
- for(let i=0;i<n;i++) state.players.push({name:names[i],dead:false,theme:playerThemes[i],hand:[cloneCard(cardDef('Hippo Treat'))]});
+ state={players:[],deck:cleanDeck,discard:[],turn:0,turnDraws:1,queuedDraws:Array(n).fill(0),started:true,selectedIndex:null,locked:false,npcRunning:false};
+ for(let i=0;i<n;i++) state.players.push({name:names[i],ai:ais[i],dead:false,theme:playerThemes[i],hand:[cloneCard(cardDef('Hippo Treat'))]});
  for(let i=0;i<Math.max(0,6-n);i++) state.deck.push(cloneCard(cardDef('Hippo Treat')));
  shuffle(state.deck);
  for(let r=0;r<4;r++) state.players.forEach(p=>p.hand.push(state.deck.pop()));
@@ -50,12 +64,16 @@ function start(){
 }
 function aliveIndexAfter(i){let guard=0, j=i; do{j=(j+1)%state.players.length; guard++;}while(state.players[j].dead && guard<20); return j}
 function beginTurn(i){state.turn=i; state.turnDraws=state.queuedDraws[i] || 1; state.queuedDraws[i]=0; state.selectedIndex=null; status(`${current().name}'s turn. Required draws: ${state.turnDraws}.`); render(); showTurnOverlay(i);}
-function advanceTurn(){ if(alivePlayers().length<=1){const w=alivePlayers()[0]?.name || 'Nobody'; status(`${w} wins!`); render(); showEvent({kind:'win',title:'🏆 WINNER!',text:`${w} is the last explorer standing.`,button:'New game?',onClose:()=>{}}); return;} beginTurn(aliveIndexAfter(state.turn)); }
-function endOneDrawSafely(){state.turnDraws--; if(state.turnDraws<=0) advanceTurn(); else {status(`${current().name} still has ${state.turnDraws} required draw turn(s).`); render();}}
+function advanceTurn(){ state.npcRunning=false; if(alivePlayers().length<=1){const w=alivePlayers()[0]?.name || 'Nobody'; status(`${w} wins!`); render(); showEvent({kind:'win',title:'🏆 WINNER!',text:`${w} is the last explorer standing.`,button:'New game?',onClose:()=>{}}); return;} beginTurn(aliveIndexAfter(state.turn)); }
+function endOneDrawSafely(){state.turnDraws--; if(state.turnDraws<=0) advanceTurn(); else {status(`${current().name} still has ${state.turnDraws} required draw turn(s).`); render(); if(current().ai!=='human') setTimeout(runNpcTurn,350);}}
 function showEvent({kind='action',title,text,img,button='Continue',onClose}){ state.locked=true; const overlay=$('#eventOverlay'), card=$('#eventCard'); card.className='eventCard '+kind; card.innerHTML=`${img?`<img class="eventImg" src="assets/${img}" alt="">`:''}<h2>${title}</h2><p>${text}</p><button id="eventOk">${button}</button>`; overlay.classList.add('open'); const ok=$('#eventOk'); ok.onclick=()=>{overlay.classList.remove('open'); state.locked=false; if(onClose) onClose(); render();}; }
-function showTurnOverlay(i){ const p=state.players[i]; document.documentElement.style.setProperty('--player-accent',p.theme.accent); document.documentElement.style.setProperty('--player-soft',p.theme.soft); showEvent({kind:'turn',title:`${p.name}'s turn`,text:`Pass the device to ${p.name}. Required draws: ${state.turnDraws}. The whole table color now matches this player.`,button:'Start turn'}); }
+function showTurnOverlay(i){
+ const p=state.players[i]; document.documentElement.style.setProperty('--player-accent',p.theme.accent); document.documentElement.style.setProperty('--player-soft',p.theme.soft);
+ const npc=p.ai && p.ai!=='human';
+ showEvent({kind:'turn',title:`${p.name}'s turn`,text:npc?`${p.name} is ${p.ai.toUpperCase()} NPC. Tap to watch it choose a move.`:`Pass the device to ${p.name}. Required draws: ${state.turnDraws}. The whole table color now matches this player.`,button:npc?'Run NPC turn':'Start turn',onClose:()=>{if(npc) setTimeout(runNpcTurn,350)}});
+}
 function draw(){
- if(state.locked) return; if(!state.started) return status('Start a new game first.'); const p=current(); if(p.dead) return advanceTurn();
+ if(state.locked) return; if(!state.started) return status('Start a new game first.'); const p=current(); if(p.ai!=='human' && !state.npcRunning) return status(`${p.name} is an NPC. Use the turn overlay / wait for the NPC.`); if(p.dead) return advanceTurn();
  if(!state.deck.length) return status('Deck empty. No one else becomes lunch. Start a new game.');
  const c=state.deck.pop(); render();
  if(c.name==='Hiposaurus'){
@@ -74,6 +92,79 @@ function cancelByNotToday(actorIndex, after){
   if(val==null) return after(false); const p=state.players[val]; const idx=p.hand.findIndex(c=>c.name==='Not Today!'); state.discard.push(p.hand.splice(idx,1)[0]); status(`${p.name} played Not Today! The action was cancelled.`); showEvent({kind:'cancel',title:'✋ NOT TODAY!',img:cardDef('Not Today!').img,text:`${p.name} cancelled the action before it took effect.`,button:'Blocked',onClose:()=>after(true)});
  });
 }
+
+function topCard(){return state.deck[state.deck.length-1]}
+function countInHand(p,name){return p.hand.filter(c=>c.name===name).length}
+function idxInHand(p,name){return p.hand.findIndex(c=>c.name===name)}
+function hippoRisk(){return state.deck.length ? state.deck.filter(c=>c.name==='Hiposaurus').length/state.deck.length : 0}
+function bestTargetIndex(){let opts=state.players.map((p,i)=>({p,i})).filter(x=>!x.p.dead && x.i!==state.turn && x.p.hand.length); opts.sort((a,b)=>b.p.hand.length-a.p.hand.length); return opts[0]?.i ?? aliveIndexAfter(state.turn)}
+function removeByName(p,name,n=1){for(let k=0;k<n;k++){const i=idxInHand(p,name); if(i>=0) state.discard.push(p.hand.splice(i,1)[0]);}}
+function npcMoveScore(name,p,level){
+ const top=topCard(), risk=hippoRisk(), hasTreat=countInHand(p,'Hippo Treat')>0;
+ let s=0;
+ if(name==='Play Dead') s += (top?.name==='Hiposaurus'&&!hasTreat?140:0) + (state.turnDraws>1?45:0) + risk*35;
+ if(name==='Stampede') s += 55 + (state.turnDraws>1?35:0) + risk*45;
+ if(name==='Lost in the Swamp') s += (top?.name==='Hiposaurus'&&!hasTreat?110:0) + risk*18;
+ if(name==='Rewrite the Tracks') s += (top?.name==='Hiposaurus'&&!hasTreat?80:0) + (state.deck[0]?.name==='Hiposaurus'?-60:15);
+ if(name==='Hippo Vision') s += level==='easy'?5:22 + risk*20;
+ if(name==='Share Snacks') s += state.players.some((x,i)=>i!==state.turn&&!x.dead&&x.hand.length)?28:0;
+ for(const an of allyNames){const same=countInHand(p,an); if(name===an && same>=2) s += same>=3?36:25;}
+ return s;
+}
+function chooseNpcMove(level){
+ const p=current(); const legal=[];
+ for(const c of p.hand){
+  if(['defuse','danger','reaction'].includes(c.type)) continue;
+  if(c.type==='ally' && countInHand(p,c.name)<2) continue;
+  legal.push(c.name);
+ }
+ if(level==='strategic' && topCard()?.name==='Hiposaurus' && !countInHand(p,'Hippo Treat')){
+  for(const panic of ['Play Dead','Stampede','Lost in the Swamp','Rewrite the Tracks']) if(legal.includes(panic)) return panic;
+ }
+ if(level==='easy'){
+  if(topCard()?.name==='Hiposaurus' && !countInHand(p,'Hippo Treat')) return legal.find(x=>['Play Dead','Lost in the Swamp','Stampede'].includes(x));
+  return hippoRisk()>.22 ? legal.find(x=>['Hippo Vision','Play Dead'].includes(x)) : null;
+ }
+ let best=null, bestScore=level==='smart'?30:24;
+ for(const name of [...new Set(legal)]){const sc=npcMoveScore(name,p,level); if(sc>bestScore){best=name; bestScore=sc;}}
+ return best;
+}
+function npcPlayByName(name){
+ const p=current(); const idx=idxInHand(p,name); if(idx<0) return false; const c=p.hand[idx];
+ if(c.type==='ally'){
+  const target=bestTargetIndex(); const same=countInHand(p,name);
+  removeByName(p,name, same>=3?3:2);
+  const tp=state.players[target];
+  if(tp.hand.length){const ri=Math.floor(Math.random()*tp.hand.length); p.hand.push(tp.hand.splice(ri,1)[0]);}
+  status(`${p.name} played ${same>=3?'three':'two'} ${name} and stole from ${tp.name}.`);
+  showEvent({kind:'ally',title:`NPC COMBO: ${name}`,img:cardDef(name).img,text:`${p.name} used an Ally combo and took a card from ${tp.name}.`,button:'Continue',onClose:()=>setTimeout(runNpcTurn,250)});
+  return true;
+ }
+ discardFromHand(p,idx); state.selectedIndex=null; render();
+ showEvent({kind:'play',title:`NPC plays ${c.name}`,img:c.img,text:`${p.name} chose this card using ${p.ai} strategy.`,button:'Resolve',onClose:()=>resolveNpcAction(c)});
+ return true;
+}
+function resolveNpcAction(c){
+ const p=current();
+ if(c.name==='Play Dead') return showEvent({kind:'safe',title:'😵 PLAY DEAD',img:c.img,text:`${p.name} skips one required draw.`,button:'Continue',onClose:endOneDrawSafely});
+ if(c.name==='Stampede'){const next=aliveIndexAfter(state.turn); state.queuedDraws[next]=Math.max(state.queuedDraws[next],2); return showEvent({kind:'stampede',title:'💥 STAMPEDE!',img:c.img,text:`${state.players[next].name} gets 2 required draws.`,button:'Continue',onClose:advanceTurn});}
+ if(c.name==='Share Snacks'){const ti=bestTargetIndex(), tp=state.players[ti]; if(tp.hand.length){const ri=Math.floor(Math.random()*tp.hand.length); p.hand.push(tp.hand.splice(ri,1)[0]);} return showEvent({kind:'snack',title:'🍉 SHARE SNACKS',img:c.img,text:`${p.name} took one random card from ${tp.name}.`,button:'Continue',onClose:()=>setTimeout(runNpcTurn,250)});}
+ if(c.name==='Lost in the Swamp'){shuffle(state.deck); return showEvent({kind:'swamp',title:'🌀 LOST IN THE SWAMP',img:c.img,text:`${p.name} shuffled the draw pile.`,button:'Continue',onClose:()=>setTimeout(runNpcTurn,250)});}
+ if(c.name==='Rewrite the Tracks'){const bottom=state.deck.shift(); if(bottom) state.deck.push(bottom); return showEvent({kind:'tracks',title:'⏱ REWRITE THE TRACKS',img:c.img,text:`${p.name} moved the bottom card to the top.`,button:'Continue',onClose:()=>setTimeout(runNpcTurn,250)});}
+ if(c.name==='Hippo Vision'){
+  const top=state.deck.slice(-3).reverse();
+  if(top.some(x=>x.name==='Hiposaurus') && !countInHand(p,'Hippo Treat')) shuffle(state.deck); // strategic survival: scramble visible danger
+  return showEvent({kind:'vision',title:'👀 HIPPO VISION',img:c.img,text:`${p.name} inspected the top cards and adjusted risk.`,button:'Continue',onClose:()=>setTimeout(runNpcTurn,250)});
+ }
+ setTimeout(runNpcTurn,250);
+}
+function runNpcTurn(){
+ if(!state.started || state.locked) return; const p=current(); if(!p || p.dead || p.ai==='human') return; state.npcRunning=true; render();
+ const move=chooseNpcMove(p.ai);
+ if(move) return npcPlayByName(move);
+ status(`${p.name} chooses to draw.`); draw(); state.npcRunning=false;
+}
+
 function selectTarget(excludeSelf, cb){ const choices=state.players.map((p,i)=>({p,i})).filter(x=>!x.p.dead && (!excludeSelf || x.i!==state.turn)); choose('Choose a player', choices.map(x=>({title:x.p.name,sub:`${x.p.hand.length} cards`,value:x.i})), cb); }
 function playSelected(){ const i=state.selectedIndex; if(i==null) return status('Select a card first.'); playCard(i); }
 function playCard(i){
@@ -108,11 +199,11 @@ function render(){
  $('#deckCount').textContent=state.started?`${state.deck.length}\nCARDS`:'DECK';
  $('#turnInfo').textContent=state.started?`${current().name}\n${state.turnDraws} required draw${state.turnDraws===1?'':'s'}`:'No game running';
  $('#discardInfo').textContent=`Discard: ${state.discard.length}`;
- $('#playersView').innerHTML=state.players.map((p,i)=>`<button class="player ${i===state.turn?'active':''} ${p.dead?'dead':''}" style="--p:${p.theme.accent};--ps:${p.theme.soft}" onclick="selectPlayer(${i})"><b>${i===state.turn?'▶ ':''}${p.name}</b><span>${p.dead?'Lunch':'Alive'} · ${p.hand.length} cards</span>${state.queuedDraws[i]?`<em>${state.queuedDraws[i]} queued</em>`:''}</button>`).join('');
+ $('#playersView').innerHTML=state.players.map((p,i)=>`<button class="player ${i===state.turn?'active':''} ${p.dead?'dead':''}" style="--p:${p.theme.accent};--ps:${p.theme.soft}" onclick="selectPlayer(${i})"><b>${i===state.turn?'▶ ':''}${p.name}</b><span>${p.dead?'Lunch':(p.ai==='human'?'Human':p.ai.toUpperCase()+' NPC')} · ${p.hand.length} cards</span>${state.queuedDraws[i]?`<em>${state.queuedDraws[i]} queued</em>`:''}</button>`).join('');
  const hand=$('#hand'); hand.innerHTML=''; (p?.hand||[]).forEach((c,i)=>{const el=tile(c); if(i===state.selectedIndex) el.classList.add('selected'); el.onclick=()=>selectCard(i); hand.appendChild(el)});
  $('#handTitle').textContent=p?`${p.name}'s hand`:'Current hand'; renderSelected();
 }
-function renderSelected(){ const p=current(); const c=p?.hand?.[state.selectedIndex]; const panel=$('#selectedCard'), actions=$('#actionButtons'); actions.innerHTML=''; if(!c){panel.innerHTML='<b>Select a card</b><span>Tap a card in the hand to see what it can do. Player turns change automatically after drawing or turn-ending actions.</span>'; return;} panel.innerHTML=`<img src="assets/${c.img}" alt="${c.name}"><b>${c.name}</b><span>${c.text}</span>`; const play=document.createElement('button'); play.textContent = c.type==='defuse'?'Held automatically': c.name==='Not Today!'?'Reaction only':'Play card'; play.onclick=playSelected; actions.appendChild(play); const read=document.createElement('button'); read.className='secondaryAction'; read.textContent='Explain'; read.onclick=()=>showModal(c.name,`<p class="rulesList">${c.text}</p><img style="width:100%;max-height:60vh;object-fit:contain" src="assets/${c.img}">`); actions.appendChild(read); }
+function renderSelected(){ const p=current(); const c=p?.hand?.[state.selectedIndex]; const panel=$('#selectedCard'), actions=$('#actionButtons'); actions.innerHTML=''; if(!c){panel.innerHTML='<b>Select a card</b><span>Tap a card in the hand to see what it can do. In setup, each player can be Human, NPC Easy, NPC Smart, or NPC Strategic.</span>'; return;} panel.innerHTML=`<img src="assets/${c.img}" alt="${c.name}"><b>${c.name}</b><span>${c.text}</span>`; const play=document.createElement('button'); play.textContent = c.type==='defuse'?'Held automatically': c.name==='Not Today!'?'Reaction only':'Play card'; play.onclick=playSelected; actions.appendChild(play); const read=document.createElement('button'); read.className='secondaryAction'; read.textContent='Explain'; read.onclick=()=>showModal(c.name,`<p class="rulesList">${c.text}</p><img style="width:100%;max-height:60vh;object-fit:contain" src="assets/${c.img}">`); actions.appendChild(read); }
 function tile(c){const el=document.createElement('div'); el.className='cardTile '+c.type; el.innerHTML=`<img src="assets/${c.img}" alt="${c.name}"><b>${c.name}</b><p>${c.text}</p>`; return el}
-function rules(){showModal('Quick rules',`<div class="rulesList"><p><b>Goal:</b> be the last explorer alive.</p><p><b>Turn:</b> play as many cards as you want, then draw 1 card to end your turn.</p><p><b>Hiposaurus:</b> a big animated alert appears when drawn. You are out unless you have Hippo Treat.</p><p><b>Hippo Treat:</b> used automatically, then Hiposaurus is hidden at the bottom of the deck.</p><p><b>Ally cards:</b> play 2 identical to steal random; 3 identical to request a specific card; 5 different to take from discard.</p><p><b>Turns:</b> the board color changes for each player. Pass the device when the turn overlay appears.</p></div>`)}
+function rules(){showModal('Quick rules',`<div class="rulesList"><p><b>Goal:</b> be the last explorer alive.</p><p><b>Turn:</b> play as many cards as you want, then draw 1 card to end your turn.</p><p><b>Hiposaurus:</b> a big animated alert appears when drawn. You are out unless you have Hippo Treat.</p><p><b>Hippo Treat:</b> used automatically, then Hiposaurus is hidden at the bottom of the deck.</p><p><b>Ally cards:</b> play 2 identical to steal random; 3 identical to request a specific card; 5 different to take from discard.</p><p><b>NPC players:</b> set any player to Easy, Smart, or Strategic in Players. Easy uses simple survival rules, Smart scores legal moves, Strategic looks ahead for immediate Hiposaurus danger.</p><p><b>Turns:</b> the board color changes for each player. Pass the device when the turn overlay appears.</p></div>`)}
 $('#players').oninput=setupNames; $('#setupBtn').onclick=()=>$('#setupPanel').classList.toggle('open'); $('#newGame').onclick=start; $('#drawBtn').onclick=draw; $('#drawBtn').onkeydown=e=>{if(e.key==='Enter'||e.key===' ') draw()}; $('#endBtn').onclick=()=>status('Normal turns end by drawing. To avoid drawing, play Play Dead or Stampede.'); $('#rulesBtn').onclick=rules; $('#closeModal').onclick=()=>$('#modal').classList.remove('open'); setupNames(); render(); window.selectPlayer=selectPlayer;
